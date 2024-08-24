@@ -35,3 +35,4 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/resources/firebase/becyclin-firebase-adminsdk-ki7nj-5926a50271.json
+.DS_Store
