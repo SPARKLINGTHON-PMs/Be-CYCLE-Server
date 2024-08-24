@@ -2,12 +2,17 @@ package gdsc.sparkling_thon.book.domain.dto;
 
 import gdsc.sparkling_thon.book.domain.entity.BookEntity;
 import gdsc.sparkling_thon.book.domain.entity.OriginalBookEntity;
+import gdsc.sparkling_thon.book.domain.enums.BookStateEnum;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class BookInfoDto {
 	private Long id;
 	private String title;
+	private BookStateEnum status;
 	private String author;
 	private String publisher;
 
@@ -31,7 +36,14 @@ public class BookInfoDto {
 	public BookInfoDto(BookEntity bookEntity) {
 		this.id = bookEntity.getId();
 		this.title = bookEntity.getOriginalBook().getTitle();
+		this.status = bookEntity.getStatus();
 		this.author = bookEntity.getOriginalBook().getAuthor();
 		this.publisher = bookEntity.getOriginalBook().getPublisher();
+	}
+
+	public static List<BookInfoDto> of(List<BookEntity> books) {
+		return books.stream()
+			.map(BookInfoDto::new)
+			.collect(Collectors.toList());
 	}
 }

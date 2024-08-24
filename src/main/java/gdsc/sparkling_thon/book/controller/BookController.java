@@ -1,13 +1,11 @@
 package gdsc.sparkling_thon.book.controller;
 
 import java.util.List;
+import java.util.Set;
 
+import gdsc.sparkling_thon.book.domain.enums.SearchCategoryEnum;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import gdsc.sparkling_thon.book.domain.dto.BookInfoDto;
 import gdsc.sparkling_thon.book.domain.dto.PostCreateDto;
@@ -34,6 +32,17 @@ public class BookController {
 	public ResponseEntity<List<BookInfoDto>> searchBooksByOcr(@RequestParam("ocrText") String ocrText) {
 		List<BookInfoDto> books = bookService.searchBooksByOcrResult(ocrText);
 		return ResponseEntity.ok(books);
+	}
+
+	@GetMapping("")
+	public ResponseEntity<List<BookInfoDto>> getBookList(
+		@CookieValue(value = "userId", defaultValue = "defaultUserId") String userId,
+		@RequestParam(value = "options",required = false) Set<SearchCategoryEnum> options
+	) {
+		List<BookEntity> books = bookService.getBooks(userId, options);
+		List<BookInfoDto> bookInfoDtos = BookInfoDto.of(books);
+
+		return ResponseEntity.ok(bookInfoDtos);
 	}
 
 	// 책 포스트 생성

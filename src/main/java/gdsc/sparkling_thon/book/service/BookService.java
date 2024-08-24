@@ -5,8 +5,10 @@ import gdsc.sparkling_thon.book.domain.dto.PostCreateDto;
 import gdsc.sparkling_thon.book.domain.entity.BookEntity;
 import gdsc.sparkling_thon.book.domain.entity.CategoryEntity;
 import gdsc.sparkling_thon.book.domain.entity.OriginalBookEntity;
+import gdsc.sparkling_thon.book.domain.enums.SearchCategoryEnum;
 import gdsc.sparkling_thon.book.repository.BookRepository;
 import gdsc.sparkling_thon.book.repository.CategoryRepository;
+import gdsc.sparkling_thon.book.repository.DefaultBookRepository;
 import gdsc.sparkling_thon.book.repository.OriginalBookRepository;
 import gdsc.sparkling_thon.user.domain.UserEntity;
 import gdsc.sparkling_thon.user.repository.UserRepository;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class BookService {
 
 	private final BookRepository bookRepository;
+	private final DefaultBookRepository defaultBookRepository;
 	private final UserRepository userRepository;
 	private final OriginalBookRepository originalBookRepository;
 	private final CategoryRepository categoryRepository;
@@ -58,5 +61,18 @@ public class BookService {
 			.build();
 
 		return bookRepository.save(book);
+	}
+
+    public List<BookInfoDto> getBookList() {
+return null;
+    }
+
+	public List<String> getCategoriesName(String userId, Set<String> options) {
+		return null;
+	}
+
+	public List<BookEntity> getBooks(String userId, Set<SearchCategoryEnum> options) {
+		return defaultBookRepository.getBooks(userId, options. stream().collect(Collectors.toSet()), 0, 0);
+
 	}
 }
