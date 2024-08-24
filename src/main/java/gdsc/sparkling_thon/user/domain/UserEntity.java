@@ -36,9 +36,10 @@ public class UserEntity {
     @Column(nullable = false)
     private String city;
 
-    // to-do: 나중에 연결
+    // TODO: 나중에 연결
     @Column(nullable = false)
     private String category;
+
     @Column(nullable = true)  // nullable을 허용하여 FCM 토큰이 없는 경우도 처리
     private String fcmToken;
 

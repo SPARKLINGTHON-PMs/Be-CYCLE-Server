@@ -18,14 +18,18 @@ public class UserController {
 
     private final UserService userService;
 
+    // 회원가입 엔드포인트
     @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody UserRequest request){
+    public ResponseEntity<String> join(@RequestBody UserRequest request) {
         userService.join(request);
         return ResponseEntity.ok().body("회원가입이 성공했습니다.");
     }
 
+    // 로그인 엔드포인트
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.login(request));
+    public ResponseEntity<String> login(@RequestBody UserLoginRequest request) {
+        // 로그인 처리 후 사용자 식별자 반환
+        String result = userService.login(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 }

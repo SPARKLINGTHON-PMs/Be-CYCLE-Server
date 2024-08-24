@@ -12,43 +12,48 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    public final UserRepository userRepository;
 
+    private final UserRepository userRepository;
+
+    // 회원가입 처리 로직
     public void join(UserRequest request) {
         String loginTelNum = request.getTelNum();
 
+        // 중복 사용자 체크
         userDuplicateCheck(loginTelNum);
+        // 사용자 생성
         createUser(request);
     }
 
-    public void userDuplicateCheck(String login_tel_num){
-        userRepository.findByTelNum(login_tel_num)
-                .ifPresent(userEntity -> {
-                    throw new AppException(ErrorCode.USERID_DUPICATED);
-                });
+    // 중복 사용자 체크 메소드
+    private void userDuplicateCheck(String loginTelNum) {
+        userRepository.findByTelNum(loginTelNum)
+            .ifPresent(userEntity -> {
+                throw new AppException(ErrorCode.USERID_DUPICATED);
+            });
     }
 
-    public void createUser(UserRequest request){
+    // 사용자 생성 메소드
+    private void createUser(UserRequest request) {
         UserEntity userEntity = request.toEntity(request.getPwd());
         userRepository.save(userEntity);
     }
 
+    // 로그인 처리 로직
     public String login(UserLoginRequest request) {
         String loginId = request.getLoginId();
         String pwd = request.getPwd();
+
+        // 사용자를 전화번호로 찾기
         UserEntity userEntity = userRepository.findByTelNum(loginId)
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
+            .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
+
+        // 비밀번호 검증
         if (!pwd.equals(userEntity.getPwd())) {
             throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
+
+        // 로그인 성공 시 사용자 식별자 반환
         return userEntity.getTelNum();
     }
-    public void updateFcmToken(String telNum, String fcmToken) {
-        UserEntity user = userRepository.findByTelNum(telNum)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        user.updateFcmToken(fcmToken);  // 유저의 FCM 토큰 업데이트
-        userRepository.save(user);
-    }
-
 }
