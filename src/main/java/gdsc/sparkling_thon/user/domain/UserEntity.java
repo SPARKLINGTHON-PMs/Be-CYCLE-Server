@@ -2,7 +2,6 @@ package gdsc.sparkling_thon.user.domain;
 
 import gdsc.sparkling_thon.book.domain.CategoryEntity;
 import jakarta.persistence.*;
-import jdk.jfr.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +10,9 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Getter
-@Table(name = "app_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
+@Entity
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

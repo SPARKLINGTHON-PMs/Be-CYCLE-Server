@@ -1,7 +1,6 @@
 package gdsc.sparkling_thon.user.dto.request;
 
-import gdsc.sparkling_thon.user.domain.User;
-import jakarta.persistence.Column;
+import gdsc.sparkling_thon.user.domain.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +26,8 @@ public class UserRequest {
         this.category = category;
     }
 
-    public User toEntity(String encodedPwd) {
-        return User.builder()
+    public UserEntity toEntity(String encodedPwd) {
+        return UserEntity.builder()
                 .telNum(telNum)
                 .name(name)
                 .pwd(encodedPwd)
