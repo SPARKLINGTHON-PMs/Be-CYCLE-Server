@@ -51,11 +51,4 @@ public class UserEntity {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
-    //유저의 카테코리 목록을 가져오는 메소드
-    public List<CategoryEntity> getCategories() {
-        return userCategories.stream()
-                .map(UserCategoryEntity::getCategory)
-                .collect(Collectors.toList());
-    }
 }
