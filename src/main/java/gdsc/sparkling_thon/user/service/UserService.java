@@ -6,6 +6,8 @@ import gdsc.sparkling_thon.user.domain.UserEntity;
 import gdsc.sparkling_thon.user.dto.request.UserLoginRequest;
 import gdsc.sparkling_thon.user.dto.request.UserRequest;
 import gdsc.sparkling_thon.user.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,7 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
-    public String login(UserLoginRequest request) {
+    public void login(UserLoginRequest request, HttpServletResponse response) {
         String loginId = request.getLoginId();
         String pwd = request.getPwd();
         UserEntity userEntity = userRepository.findByTelNum(loginId)
@@ -41,8 +43,11 @@ public class UserService {
         if (!pwd.equals(userEntity.getPwd())) {
             throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
-        return userEntity.getTelNum();
+
+        Cookie cookie = new Cookie("userId", userEntity.getTelNum());
+        cookie.setMaxAge(7 * 24 * 60 * 60); // 7일
+        cookie.setHttpOnly(true);
+        cookie.setPath("/"); // 모든 경로에서 유효
+        response.addCookie(cookie);
     }
-
-
 }

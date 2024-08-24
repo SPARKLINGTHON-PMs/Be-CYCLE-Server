@@ -3,6 +3,7 @@ package gdsc.sparkling_thon.user.controller;
 import gdsc.sparkling_thon.user.dto.request.UserLoginRequest;
 import gdsc.sparkling_thon.user.dto.request.UserRequest;
 import gdsc.sparkling_thon.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.login(request));
+    public ResponseEntity<String> login(@RequestBody UserLoginRequest request, HttpServletResponse response){
+        userService.login(request, response);
+        return ResponseEntity.status(HttpStatus.CREATED).body("로그인이 성공했습니다.");
     }
 }
