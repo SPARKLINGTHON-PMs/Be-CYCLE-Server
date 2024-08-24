@@ -1,6 +1,6 @@
-package gdsc.sparkling_thon.book.domain;
+package gdsc.sparkling_thon.book.domain.entity;
 
-import gdsc.sparkling_thon.user.domain.UserEntity;
+import gdsc.sparkling_thon.book.domain.enums.TradeStateEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,24 +13,21 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "book")
-public class BookEntity {
+@Table(name = "book_trade")
+public class BookTradeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private UserEntity user;
+    private BookEntity buyBook;
 
     @ManyToOne
-    private OriginalBookEntity originalBook;
-
-    @Column(nullable = false)
-    private String image;
+    private BookEntity sellBook;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
-    private BookStateEnum status;
+    @Column
+    private TradeStateEnum status;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)

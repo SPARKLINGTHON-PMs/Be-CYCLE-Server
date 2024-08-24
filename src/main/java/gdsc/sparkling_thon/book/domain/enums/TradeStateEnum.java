@@ -1,4 +1,4 @@
-package gdsc.sparkling_thon.book.domain;
+package gdsc.sparkling_thon.book.domain.enums;
 
 public enum TradeStateEnum {
     // REJECTED: 거래 요청이 거절된 상태

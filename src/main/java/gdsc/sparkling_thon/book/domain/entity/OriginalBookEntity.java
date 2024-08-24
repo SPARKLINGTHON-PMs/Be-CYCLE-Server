@@ -1,15 +1,17 @@
-package gdsc.sparkling_thon.book.domain;
+package gdsc.sparkling_thon.book.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Getter
 @Table(name = "original_book", indexes = @Index(name="title_author_index", columnList = "title, author"))
 public class OriginalBookEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column

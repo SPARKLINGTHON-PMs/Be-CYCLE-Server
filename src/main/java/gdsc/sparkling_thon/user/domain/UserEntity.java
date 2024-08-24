@@ -1,6 +1,6 @@
 package gdsc.sparkling_thon.user.domain;
 
-import gdsc.sparkling_thon.book.domain.CategoryEntity;
+import gdsc.sparkling_thon.book.domain.entity.CategoryEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

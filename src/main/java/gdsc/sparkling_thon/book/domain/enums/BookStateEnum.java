@@ -1,4 +1,4 @@
-package gdsc.sparkling_thon.book.domain;
+package gdsc.sparkling_thon.book.domain.enums;
 
 public enum BookStateEnum {
     NEW,
