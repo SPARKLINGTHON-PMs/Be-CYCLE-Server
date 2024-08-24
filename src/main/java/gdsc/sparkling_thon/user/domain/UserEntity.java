@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -21,8 +22,8 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String telNum;
 
-    @ManyToMany
-    private Set<CategoryEntity> interestCateogries;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCategoryEntity> userCategories = new HashSet<>();
 
     @Column(nullable = false)
     private String name;

@@ -1,11 +1,13 @@
 package gdsc.sparkling_thon.book.domain;
 
+import gdsc.sparkling_thon.user.domain.UserCategoryEntity;
 import gdsc.sparkling_thon.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Array;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,6 +24,6 @@ public class CategoryEntity {
     @ManyToMany
     private Set<OriginalBookEntity> books;
 
-    @ManyToMany
-    private Set<UserEntity> users;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCategoryEntity> userCategories = new HashSet<>();
 }
