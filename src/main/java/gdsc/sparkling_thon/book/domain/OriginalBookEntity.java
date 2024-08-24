@@ -2,7 +2,7 @@ package gdsc.sparkling_thon.book.domain;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,7 +22,7 @@ public class OriginalBookEntity {
     private String publisher;
 
     @Column
-    private Date publicationDate;
+    private LocalDateTime publishedAt;
 
     @ManyToMany
     private List<CategoryEntity> categories;
