@@ -30,14 +30,13 @@ public class DefaultBookRepository {
         QUserEntity userEntity = QUserEntity.userEntity;
         JPAQuery<BookEntity> query = queryFactory.selectFrom(bookEntity);
 
-//        UserEntity searcher = queryFactory.selectFrom(userEntity)
-//            .where(userEntity.telNum.eq(userTel))
-//            .fetchOne();
-//
+        UserEntity searcher = queryFactory.selectFrom(userEntity)
+            .where(userEntity.telNum.eq(userTel))
+            .fetchOne();
 
-//        if (options.contains(SearchCategoryEnum.NEW)) {
-//            query = query.where(bookEntity.status.eq(BookStateEnum.NEW));
-//        }
+        if (options.contains(SearchCategoryEnum.NEW)) {
+            query = query.where(bookEntity.status.eq(BookStateEnum.NEW));
+        }
 //
 //        if (options.contains(SearchCategoryEnum.INTERESTED)) {
 //            assert searcher != null;
