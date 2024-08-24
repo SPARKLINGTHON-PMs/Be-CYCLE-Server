@@ -1,6 +1,5 @@
 package gdsc.sparkling_thon.user.controller;
 
-import gdsc.sparkling_thon.book.domain.CategoryEntity;
 import gdsc.sparkling_thon.user.dto.request.UserLoginRequest;
 import gdsc.sparkling_thon.user.dto.request.UserRequest;
 import gdsc.sparkling_thon.user.dto.response.UserCategoryResponse;

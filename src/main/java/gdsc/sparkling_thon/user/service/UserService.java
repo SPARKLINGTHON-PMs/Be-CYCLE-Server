@@ -1,6 +1,7 @@
 package gdsc.sparkling_thon.user.service;
 
-import gdsc.sparkling_thon.book.domain.CategoryEntity;
+
+import gdsc.sparkling_thon.book.domain.entity.CategoryEntity;
 import gdsc.sparkling_thon.book.repository.CategoryRepository;
 import gdsc.sparkling_thon.exception.AppException;
 import gdsc.sparkling_thon.exception.ErrorCode;

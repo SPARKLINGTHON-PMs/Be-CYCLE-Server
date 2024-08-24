@@ -14,7 +14,6 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name="category")
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryEntity {
 
