@@ -1,5 +1,6 @@
 package gdsc.sparkling_thon.book.domain;
 
+import gdsc.sparkling_thon.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,28 +13,24 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Book {
+@Table(name = "book")
+public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String user_id;
+    @ManyToOne
+    private UserEntity user;
+
+    @ManyToOne
+    private OriginalBookEntity originalBook;
 
     @Column(nullable = false)
-    private String book_id;
+    private String image;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private String cover;
-
-    @Column(nullable = false)
-    private String category;
-
-    @Column(nullable = false)
-    private String status;
-
-    @Column(nullable = false)
-    private String method;
+    private BookStateEnum status;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)

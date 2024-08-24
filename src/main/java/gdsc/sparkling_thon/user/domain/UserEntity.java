@@ -1,21 +1,29 @@
 package gdsc.sparkling_thon.user.domain;
 
+import gdsc.sparkling_thon.book.domain.CategoryEntity;
 import jakarta.persistence.*;
+import jdk.jfr.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+@Table(name = "users")
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String tel_num;
+    private String telNum;
+
+    @ManyToMany
+    private Set<CategoryEntity> interestCateogries;
 
     @Column(nullable = false)
     private String name;
@@ -34,8 +42,8 @@ public class User {
     private String category;
 
     @Builder
-    public User(String tel_num, String name, String pwd, String province, String city, String category) {
-        this.tel_num = tel_num;
+    public UserEntity(String telNum, String name, String pwd, String province, String city, String category) {
+        this.telNum = telNum;
         this.name = name;
         this.pwd = pwd;
         this.province = province;
