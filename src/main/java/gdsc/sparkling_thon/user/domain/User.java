@@ -15,7 +15,7 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String tel_num;
+    private String telNum;
 
     @Column(nullable = false)
     private String name;
@@ -34,8 +34,8 @@ public class User {
     private String category;
 
     @Builder
-    public User(String tel_num, String name, String pwd, String province, String city, String category) {
-        this.tel_num = tel_num;
+    public User(String telNum, String name, String pwd, String province, String city, String category) {
+        this.telNum = telNum;
         this.name = name;
         this.pwd = pwd;
         this.province = province;
