@@ -70,7 +70,7 @@ public class UserService {
                 });
     }
 
-    public void login(UserLoginRequest request, HttpServletResponse response) {
+    public Cookie login(UserLoginRequest request, HttpServletResponse response) {
         String loginId = request.getLoginId();
         String pwd = request.getPwd();
         UserEntity userEntity = userRepository.findByTelNum(loginId)
@@ -83,7 +83,8 @@ public class UserService {
         cookie.setMaxAge(7 * 24 * 60 * 60); // 7일
         cookie.setHttpOnly(true);
         cookie.setPath("/"); // 모든 경로에서 유효
-        response.addCookie(cookie);
+
+        return cookie;
     }
 
     public List<UserCategoryResponse> getAllCategories() {

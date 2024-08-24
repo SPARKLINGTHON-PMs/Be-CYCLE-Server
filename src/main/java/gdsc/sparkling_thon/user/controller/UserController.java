@@ -4,6 +4,7 @@ import gdsc.sparkling_thon.user.dto.request.UserLoginRequest;
 import gdsc.sparkling_thon.user.dto.request.UserRequest;
 import gdsc.sparkling_thon.user.dto.response.UserCategoryResponse;
 import gdsc.sparkling_thon.user.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLoginRequest request, HttpServletResponse response){
-        userService.login(request, response);
+        Cookie cookie = userService.login(request, response);
+        response.addCookie(cookie);
         return ResponseEntity.status(HttpStatus.CREATED).body("로그인이 성공했습니다.");
     }
 
