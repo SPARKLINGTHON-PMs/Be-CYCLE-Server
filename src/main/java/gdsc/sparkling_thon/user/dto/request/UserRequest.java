@@ -15,8 +15,8 @@ public class UserRequest {
     private String name;
     private String pwd;
     private String address;
-    private Double latitude;
-    private Double longitude;
+    private double latitude;
+    private double longitude;
     private List<CategoryRequest> categories;
 
     @Builder
@@ -27,7 +27,7 @@ public class UserRequest {
         this.address = address;
     }
 
-    public UserEntity toEntity(String pwd, Double latitude, Double longitude) {
+    public UserEntity toEntity(String pwd, double latitude, double longitude) {
         return UserEntity.builder()
                 .telNum(telNum)
                 .name(name)
