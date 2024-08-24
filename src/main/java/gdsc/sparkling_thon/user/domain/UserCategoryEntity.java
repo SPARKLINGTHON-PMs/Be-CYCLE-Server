@@ -3,6 +3,7 @@ package gdsc.sparkling_thon.user.domain;
 import gdsc.sparkling_thon.book.domain.CategoryEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,10 @@ public class UserCategoryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "category_id")
     private CategoryEntity category;
+
+    @Builder
+    public UserCategoryEntity(UserEntity user, CategoryEntity category) {
+        this.user = user;
+        this.category = category;
+    }
 }

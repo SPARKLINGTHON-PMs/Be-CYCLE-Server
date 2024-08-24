@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,9 +24,6 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String telNum;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserCategoryEntity> userCategories = new HashSet<>();
-
     @Column(nullable = false)
     private String name;
 
@@ -32,22 +31,31 @@ public class UserEntity {
     private String pwd;
 
     @Column(nullable = false)
-    private String province;
+    private String address;
 
     @Column(nullable = false)
-    private String city;
+    private Double latitude;
 
-    // to-do: 나중에 연결
     @Column(nullable = false)
-    private String category;
+    private Double longitude;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCategoryEntity> userCategories = new HashSet<>();
 
     @Builder
-    public UserEntity(String telNum, String name, String pwd, String province, String city, String category) {
+    public UserEntity(String telNum, String name, String pwd, String address, Double latitude, Double longitude) {
         this.telNum = telNum;
         this.name = name;
         this.pwd = pwd;
-        this.province = province;
-        this.city = city;
-        this.category = category;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    //유저의 카테코리 목록을 가져오는 메소드
+    public List<CategoryEntity> getCategories() {
+        return userCategories.stream()
+                .map(UserCategoryEntity::getCategory)
+                .collect(Collectors.toList());
     }
 }

@@ -4,10 +4,13 @@ import gdsc.sparkling_thon.book.domain.CategoryEntity;
 import gdsc.sparkling_thon.book.repository.CategoryRepository;
 import gdsc.sparkling_thon.exception.AppException;
 import gdsc.sparkling_thon.exception.ErrorCode;
+import gdsc.sparkling_thon.user.domain.UserCategoryEntity;
 import gdsc.sparkling_thon.user.domain.UserEntity;
+import gdsc.sparkling_thon.user.dto.request.CategoryRequest;
 import gdsc.sparkling_thon.user.dto.request.UserLoginRequest;
 import gdsc.sparkling_thon.user.dto.request.UserRequest;
 import gdsc.sparkling_thon.user.dto.response.UserCategoryResponse;
+import gdsc.sparkling_thon.user.repository.UserCategoryRepository;
 import gdsc.sparkling_thon.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,12 +25,41 @@ import java.util.stream.Collectors;
 public class UserService {
     public final UserRepository userRepository;
     public final CategoryRepository categoryRepository;
+    public final UserCategoryRepository userCategoryRepository;
 
     public void join(UserRequest request) {
         String loginTelNum = request.getTelNum();
-
         userDuplicateCheck(loginTelNum);
-        createUser(request);
+
+        UserEntity newUser = createUser(request);
+        createUserCategory(newUser.getId(), request.getCategories());
+    }
+
+    public UserEntity createUser(UserRequest request){
+
+        //테스트용 더미데이터
+        double testLatitude = 37.5665;
+        double testLongitude = 126.978;
+
+        UserEntity userEntity = request.toEntity(request.getPwd(), testLatitude, testLongitude);
+        return userRepository.save(userEntity);
+    }
+
+    public void createUserCategory(Long userId, List<CategoryRequest> categories) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
+
+        for (CategoryRequest categoryRequest : categories) {
+            CategoryEntity category = categoryRepository.findById(categoryRequest.getId())
+                    .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
+
+            UserCategoryEntity userCategoryEntity = UserCategoryEntity.builder()
+                    .user(user)
+                    .category(category)
+                    .build();
+
+            userCategoryRepository.save(userCategoryEntity);
+        }
     }
 
     public void userDuplicateCheck(String login_tel_num){
@@ -35,11 +67,6 @@ public class UserService {
                 .ifPresent(userEntity -> {
                     throw new AppException(ErrorCode.USERID_DUPICATED);
                 });
-    }
-
-    public void createUser(UserRequest request){
-        UserEntity userEntity = request.toEntity(request.getPwd());
-        userRepository.save(userEntity);
     }
 
     public void login(UserLoginRequest request, HttpServletResponse response) {
