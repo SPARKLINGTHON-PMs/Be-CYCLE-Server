@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Getter
-@Entity
+@Table(name = "app_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class UserEntity {
