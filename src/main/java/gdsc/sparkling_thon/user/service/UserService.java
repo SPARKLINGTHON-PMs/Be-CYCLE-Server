@@ -43,6 +43,12 @@ public class UserService {
         }
         return userEntity.getTelNum();
     }
+    public void updateFcmToken(String telNum, String fcmToken) {
+        UserEntity user = userRepository.findByTelNum(telNum)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        user.updateFcmToken(fcmToken);  // 유저의 FCM 토큰 업데이트
+        userRepository.save(user);
+    }
 
 }

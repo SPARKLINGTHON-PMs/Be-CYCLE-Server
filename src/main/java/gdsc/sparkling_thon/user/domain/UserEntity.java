@@ -39,7 +39,13 @@ public class UserEntity {
     // to-do: 나중에 연결
     @Column(nullable = false)
     private String category;
+    @Column(nullable = true)  // nullable을 허용하여 FCM 토큰이 없는 경우도 처리
+    private String fcmToken;
 
+
+    public void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
     @Builder
     public UserEntity(String telNum, String name, String pwd, String province, String city, String category) {
         this.telNum = telNum;
