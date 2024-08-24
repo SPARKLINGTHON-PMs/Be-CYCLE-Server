@@ -12,28 +12,20 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Book {
+public class BookTradeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String user_id;
+    @ManyToOne
+    private BookEntity buyBook;
 
-    @Column(nullable = false)
-    private String book_id;
+    @ManyToOne
+    private BookEntity payBook;
 
-    @Column(nullable = false)
-    private String cover;
-
-    @Column(nullable = false)
-    private String category;
-
-    @Column(nullable = false)
-    private String status;
-
-    @Column(nullable = false)
-    private String method;
+    @Enumerated(value = EnumType.STRING)
+    @Column
+    private TradeStateEnum status;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)

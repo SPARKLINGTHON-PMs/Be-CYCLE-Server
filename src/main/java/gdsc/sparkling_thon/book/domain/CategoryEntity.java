@@ -1,0 +1,26 @@
+package gdsc.sparkling_thon.book.domain;
+
+import gdsc.sparkling_thon.user.domain.UserEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+import java.lang.reflect.Array;
+import java.util.Set;
+
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CategoryEntity {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String name;
+
+    @ManyToMany
+    private Set<OriginalBookEntity> books;
+
+    @ManyToMany
+    private Set<UserEntity> users;
+}

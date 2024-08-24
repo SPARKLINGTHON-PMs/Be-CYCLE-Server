@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+#  backend:
+#    container_name: backend
+#    image: ghcr.io/puleugo/boilerplate:latest
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    restart: always
+#    env_file:
+#      - .env
+#    ports:
+#      - 5001:5001
+#    networks:
+#      - backend
+#    depends_on:
+#      - db
+
+  db:
+    image: postgres:13
+    container_name: hackerthon-postgres
+    restart: always
+#    env_file:
+#      - .env
+    networks:
+      - backend
+    environment:
+      POSTGRES_DB: pg_db
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: pg_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+
+
+      #  redis:
+#    image: redis
+#    container_name: wtgames-redis
+#    restart: always
+#    env_file:
+#      - .env
+#    volumes:
+#      - redis:/var/lib/redis/data:rw
+
+networks:
+  backend:
+
+volumes:
+ db_data:
+# redis:
