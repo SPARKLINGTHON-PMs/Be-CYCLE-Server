@@ -8,7 +8,7 @@ import java.util.Base64;
 
 @Component
 public class ImageUtil {
-    public String resizeImage(MultipartFile file) {
+    public static String toByteString(MultipartFile file) {
         try {
             return Base64.getEncoder().encodeToString(file.getBytes()).replaceAll("\n", "");
         } catch (IOException e) {
