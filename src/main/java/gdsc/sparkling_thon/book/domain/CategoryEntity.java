@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 import java.util.Set;
 
 @Entity
+@Table(name="category")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryEntity {
     @Id

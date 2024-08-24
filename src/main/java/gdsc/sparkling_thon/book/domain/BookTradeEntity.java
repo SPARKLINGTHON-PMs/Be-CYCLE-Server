@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "book_trade")
 public class BookTradeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class BookTradeEntity {
     private BookEntity buyBook;
 
     @ManyToOne
-    private BookEntity payBook;
+    private BookEntity sellBook;
 
     @Enumerated(value = EnumType.STRING)
     @Column
