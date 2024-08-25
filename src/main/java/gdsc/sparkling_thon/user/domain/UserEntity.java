@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -21,9 +22,6 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String telNum;
 
-    @ManyToMany
-    private Set<CategoryEntity> interestCateogries;
-
     @Column(nullable = false)
     private String name;
 
@@ -31,29 +29,24 @@ public class UserEntity {
     private String pwd;
 
     @Column(nullable = false)
-    private String province;
+    private String address;
 
     @Column(nullable = false)
-    private String city;
+    private Double latitude;
 
-    // TODO: 나중에 연결
     @Column(nullable = false)
-    private String category;
+    private Double longitude;
 
-    @Column(nullable = true)  // nullable을 허용하여 FCM 토큰이 없는 경우도 처리
-    private String fcmToken;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCategoryEntity> userCategories = new HashSet<>();
 
-
-    public void updateFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
     @Builder
-    public UserEntity(String telNum, String name, String pwd, String province, String city, String category) {
+    public UserEntity(String telNum, String name, String pwd, String address, Double latitude, Double longitude) {
         this.telNum = telNum;
         this.name = name;
         this.pwd = pwd;
-        this.province = province;
-        this.city = city;
-        this.category = category;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

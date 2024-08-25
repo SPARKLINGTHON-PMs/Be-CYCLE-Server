@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class PostCreateDto {
-	private String image;
 	private Long originalBookId; // 사용자가 선택한 OriginalBook의 ID
 	private List<Long> categoryIds; // 선택된 카테고리 ID 리스트
 	private BookStateEnum status; // 책 상태

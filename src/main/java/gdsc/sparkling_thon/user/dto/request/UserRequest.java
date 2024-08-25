@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 public class UserRequest {
@@ -12,28 +14,27 @@ public class UserRequest {
     private String telNum;
     private String name;
     private String pwd;
-    private String province;
-    private String city;
-    private String category; // to-do: enum 설정
+    private String address;
+    private Double latitude;
+    private Double longitude;
+    private List<CategoryRequest> categories;
 
     @Builder
-    public UserRequest(String telNum, String name, String pwd, String province, String city, String category) {
+    public UserRequest(String telNum, String name, String pwd, String address) {
         this.telNum = telNum;
         this.name = name;
         this.pwd = pwd;
-        this.province = province;
-        this.city = city;
-        this.category = category;
+        this.address = address;
     }
 
-    public UserEntity toEntity(String encodedPwd) {
+    public UserEntity toEntity(String pwd, Double latitude, Double longitude) {
         return UserEntity.builder()
                 .telNum(telNum)
                 .name(name)
-                .pwd(encodedPwd)
-                .province(province)
-                .city(city)
-                .category(category)
+                .pwd(pwd)
+                .address(address)
+                .latitude(latitude)
+                .longitude(longitude)
                 .build();
     }
 }
