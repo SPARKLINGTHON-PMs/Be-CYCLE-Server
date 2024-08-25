@@ -134,4 +134,8 @@ public class BookService {
 		}
 		return matchedBooks.stream().distinct().map(BookInfoDto::new).collect(Collectors.toList());
 	}
+
+    public List<OriginalBookEntity> getSimilarBooks(String[] keywords) {
+		return defaultBookRepository.getSimilarBooks(keywords);
+    }
 }

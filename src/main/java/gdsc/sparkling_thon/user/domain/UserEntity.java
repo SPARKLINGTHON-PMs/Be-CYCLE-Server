@@ -32,16 +32,16 @@ public class UserEntity {
     private String address;
 
     @Column(nullable = false)
-    private Double latitude;
+    private double latitude;
 
     @Column(nullable = false)
-    private Double longitude;
+    private double longitude;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserCategoryEntity> userCategories = new HashSet<>();
 
     @Builder
-    public UserEntity(String telNum, String name, String pwd, String address, Double latitude, Double longitude) {
+    public UserEntity(String telNum, String name, String pwd, String address, double latitude, double longitude) {
         this.telNum = telNum;
         this.name = name;
         this.pwd = pwd;

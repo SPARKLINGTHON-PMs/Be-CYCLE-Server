@@ -49,4 +49,10 @@ public class BookInfoDto {
 			.map(BookInfoDto::new)
 			.collect(Collectors.toList());
 	}
+
+	public static List<BookInfoDto> ofOriginal(List<OriginalBookEntity> originalBooks) {
+		return originalBooks.stream()
+			.map(BookInfoDto::new)
+			.collect(Collectors.toList());
+	}
 }
