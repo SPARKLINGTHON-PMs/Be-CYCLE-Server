@@ -1,9 +1,13 @@
 package gdsc.sparkling_thon.book.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import gdsc.sparkling_thon.book.domain.entity.OriginalBookEntity;
 import gdsc.sparkling_thon.book.domain.enums.SearchCategoryEnum;
+import gdsc.sparkling_thon.util.ImageUtil;
+import gdsc.sparkling_thon.util.VisionClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +16,7 @@ import gdsc.sparkling_thon.book.domain.dto.PostCreateDto;
 import gdsc.sparkling_thon.book.domain.entity.BookEntity;
 import gdsc.sparkling_thon.book.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/book")
@@ -52,5 +57,13 @@ public class BookController {
 		BookEntity createdBook = bookService.createBookPost(postCreateDto, telNum);
 		BookInfoDto bookInfoDto = new BookInfoDto(createdBook);
 		return ResponseEntity.ok(bookInfoDto);
+	}
+
+	@GetMapping("similar")
+	public ResponseEntity<List<BookInfoDto>> getSimilarBooks(@RequestParam("image")MultipartFile image) throws IOException {
+		String[] keywords = VisionClient.getTextFrom(ImageUtil.toByteString(image));
+		List<OriginalBookEntity> similarBooks = bookService.getSimilarBooks(keywords);
+		List<BookInfoDto> bookInfoDtos = BookInfoDto.ofOriginal(similarBooks);
+		return ResponseEntity.ok(bookInfoDtos);
 	}
 }

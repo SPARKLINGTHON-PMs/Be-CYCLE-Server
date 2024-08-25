@@ -75,4 +75,8 @@ return null;
 		return defaultBookRepository.getBooks(userId, options. stream().collect(Collectors.toSet()), 0, 0);
 
 	}
+
+    public List<OriginalBookEntity> getSimilarBooks(String[] keywords) {
+		return defaultBookRepository.getSimilarBooks(keywords);
+    }
 }

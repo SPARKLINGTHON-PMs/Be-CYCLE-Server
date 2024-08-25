@@ -20,8 +20,12 @@ public class OriginalBookEntity {
     @Column
     private String author;
 
+    @Column(columnDefinition = "TEXT")
+    private String image;
+
     @Column
     private String publisher;
+
 
     @Column
     private LocalDateTime publishedAt;

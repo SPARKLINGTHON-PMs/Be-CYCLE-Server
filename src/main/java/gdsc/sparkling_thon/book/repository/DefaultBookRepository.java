@@ -1,22 +1,16 @@
 package gdsc.sparkling_thon.book.repository;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import gdsc.sparkling_thon.book.domain.entity.BookEntity;
-import gdsc.sparkling_thon.book.domain.entity.CategoryEntity;
-import gdsc.sparkling_thon.book.domain.entity.QBookEntity;
-import gdsc.sparkling_thon.book.domain.entity.QCategoryEntity;
+import gdsc.sparkling_thon.book.domain.entity.OriginalBookEntity;
 import gdsc.sparkling_thon.book.domain.enums.BookStateEnum;
 import gdsc.sparkling_thon.book.domain.enums.SearchCategoryEnum;
-import gdsc.sparkling_thon.user.domain.QUserEntity;
 import gdsc.sparkling_thon.user.domain.UserCategoryEntity;
 import gdsc.sparkling_thon.user.domain.UserEntity;
 import gdsc.sparkling_thon.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Dictionary;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,13 +19,12 @@ import java.util.stream.Stream;
 @Repository
 @RequiredArgsConstructor
 public class DefaultBookRepository {
+    private final OriginalBookRepository originalBookRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
     public List<BookEntity> getBooks(String userTel, Set<SearchCategoryEnum> options, double latitude, double longitude) {
         double rangeMeter = 200;
-        QCategoryEntity categoryEntity = QCategoryEntity.categoryEntity;
-        QBookEntity bookEntity = QBookEntity.bookEntity;
 
         Optional<UserEntity> userEntity = userRepository.findByTelNum(userTel);
 
@@ -64,5 +57,25 @@ public class DefaultBookRepository {
                 Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return earthRadius * c;
+    }
+
+    public List<OriginalBookEntity> getSimilarBooks(String[] keywords) {
+        // return 3
+        List<OriginalBookEntity> books = originalBookRepository.findAll();
+        // 가장 많은 키워드가 일치하는 책 3개를 반환
+        return books.stream()
+            .sorted((book1, book2) -> {
+                int count1 = countMatchedKeywords(book1, keywords);
+                int count2 = countMatchedKeywords(book2, keywords);
+                return count2 - count1;
+            })
+            .limit(3)
+            .toList();
+    }
+
+    private int countMatchedKeywords(OriginalBookEntity book, String[] keywords) {
+        return (int) Stream.of(keywords)
+            .filter(keyword -> book.getTitle().contains(keyword))
+            .count();
     }
 }
