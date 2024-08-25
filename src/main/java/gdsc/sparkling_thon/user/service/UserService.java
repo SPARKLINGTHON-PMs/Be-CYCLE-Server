@@ -27,6 +27,7 @@ public class UserService {
     public final UserRepository userRepository;
     public final CategoryRepository categoryRepository;
     public final UserCategoryRepository userCategoryRepository;
+    public final KakaoApiService kakaoApiService;
 
     public void join(UserRequest request) {
         String loginTelNum = request.getTelNum();
@@ -38,11 +39,14 @@ public class UserService {
 
     public UserEntity createUser(UserRequest request){
 
-        //테스트용 더미데이터
-        double testLatitude = 37.5665;
-        double testLongitude = 126.978;
+        double[] coordinates = kakaoApiService.getCoordinates(request.getAddress(), "e396a8da7f7fcdf4d987c28bb4234466");
+        double latitude = coordinates[0];
+        double longitude = coordinates[1];
+//        //테스트용 더미데이터
+//        double testLatitude = 37.5665;
+//        double testLongitude = 126.978;
 
-        UserEntity userEntity = request.toEntity(request.getPwd(), testLatitude, testLongitude);
+        UserEntity userEntity = request.toEntity(request.getPwd(), latitude, longitude);
         return userRepository.save(userEntity);
     }
 
