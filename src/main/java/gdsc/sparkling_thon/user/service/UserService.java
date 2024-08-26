@@ -1,6 +1,5 @@
 package gdsc.sparkling_thon.user.service;
 
-
 import gdsc.sparkling_thon.book.domain.entity.CategoryEntity;
 import gdsc.sparkling_thon.book.repository.CategoryRepository;
 import gdsc.sparkling_thon.exception.AppException;
@@ -21,13 +20,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.security.sasl.AuthenticationException;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    public final UserRepository userRepository;
-    public final CategoryRepository categoryRepository;
-    public final UserCategoryRepository userCategoryRepository;
-    public final KakaoApiService kakaoApiService;
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final UserCategoryRepository userCategoryRepository;
 
     public void join(UserRequest request) {
         String loginTelNum = request.getTelNum();
@@ -37,48 +37,45 @@ public class UserService {
         createUserCategory(newUser.getId(), request.getCategories());
     }
 
-    public UserEntity createUser(UserRequest request){
+    private UserEntity createUser(UserRequest request) {
+        // pwd가 null이 아닌지 확인하는 로직 추가
+        if (request.getPwd() == null || request.getPwd().isEmpty()) {
+            throw new IllegalArgumentException("비밀번호는 필수 항목입니다.");
+        }
 
-        double[] coordinates = kakaoApiService.getCoordinates(request.getAddress(), "e396a8da7f7fcdf4d987c28bb4234466");
-        double latitude = coordinates[0];
-        double longitude = coordinates[1];
-//        //테스트용 더미데이터
-//        double testLatitude = 37.5665;
-//        double testLongitude = 126.978;
-
-        UserEntity userEntity = request.toEntity(request.getPwd(), latitude, longitude);
+        UserEntity userEntity = request.toEntity(request.getPwd(), request.getLatitude(), request.getLongitude());
         return userRepository.save(userEntity);
     }
 
-    public void createUserCategory(Long userId, List<CategoryRequest> categories) {
+    private void createUserCategory(Long userId, List<CategoryRequest> categories) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
+            .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
 
         for (CategoryRequest categoryRequest : categories) {
             CategoryEntity category = categoryRepository.findById(categoryRequest.getId())
-                    .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
 
             UserCategoryEntity userCategoryEntity = UserCategoryEntity.builder()
-                    .user(user)
-                    .category(category)
-                    .build();
+                .user(user)
+                .category(category)
+                .build();
 
             userCategoryRepository.save(userCategoryEntity);
         }
     }
 
-    public void userDuplicateCheck(String login_tel_num){
-        userRepository.findByTelNum(login_tel_num)
-                .ifPresent(userEntity -> {
-                    throw new AppException(ErrorCode.USERID_DUPICATED);
-                });
+    private void userDuplicateCheck(String loginTelNum) {
+        userRepository.findByTelNum(loginTelNum)
+            .ifPresent(userEntity -> {
+                throw new AppException(ErrorCode.USERID_DUPICATED);
+            });
     }
 
     public Cookie login(UserLoginRequest request, HttpServletResponse response) {
         String loginId = request.getLoginId();
         String pwd = request.getPwd();
         UserEntity userEntity = userRepository.findByTelNum(loginId)
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
+            .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND));
         if (!pwd.equals(userEntity.getPwd())) {
             throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
@@ -94,7 +91,7 @@ public class UserService {
     public List<UserCategoryResponse> getAllCategories() {
         List<CategoryEntity> categories = categoryRepository.findAll();
         return categories.stream()
-                .map(category -> new UserCategoryResponse(category.getId(), category.getName()))
-                .collect(Collectors.toList());
+            .map(category -> new UserCategoryResponse(category.getId(), category.getName()))
+            .collect(Collectors.toList());
     }
 }

@@ -1,13 +1,11 @@
 package gdsc.sparkling_thon.book.domain.entity;
 
 import gdsc.sparkling_thon.user.domain.UserCategoryEntity;
-import gdsc.sparkling_thon.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,9 +22,15 @@ public class CategoryEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToMany
-    private Set<OriginalBookEntity> books;
+    @ManyToMany(mappedBy = "categories")  // 양방향 관계 설정
+    private Set<BookEntity> books = new HashSet<>();  // 초기화
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserCategoryEntity> userCategories = new HashSet<>();
+
+    // 책 추가 메서드 🎀
+    public void addBook(BookEntity book) {
+        this.books.add(book);
+        book.getCategories().add(this);
+    }
 }

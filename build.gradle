@@ -27,6 +27,9 @@ dependencies {
 	implementation 'com.google.cloud:google-cloud-vision:3.46.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
+	implementation 'com.google.cloud:google-cloud-vision:3.34.0'
+
 	runtimeOnly 'org.postgresql:postgresql'
 
 	compileOnly 'org.projectlombok:lombok'

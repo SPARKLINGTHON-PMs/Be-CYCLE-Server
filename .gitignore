@@ -4,7 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
 ### STS ###
 .apt_generated
 .classpath
@@ -35,3 +34,5 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/firebase/becyclin-firebase-adminsdk-ki7nj-5926a50271.json
+.DS_Store
